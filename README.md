@@ -48,11 +48,11 @@ Change the password after first login in production.
 This repo includes a `render.yaml` that deploys **one web service**:
 - Builds the frontend (`frontend/dist`) and serves it from the backend Express app
 - Runs the backend on `PORT` (Render sets it automatically)
-- Persists SQLite to a small attached disk via `DB_PATH=/var/data/placement.db`
+- Sets a random **`JWT_SECRET`** via the Blueprint (`generateValue: true`)
 
 ### Steps
 
-1. Push this repo to GitHub.
+1. **Push this repo to GitHub** (your code must appear on the `main` branch — an empty GitHub repo will not deploy).
 2. In Render, choose **New → Blueprint**, and select your repo.
 3. Render will detect `render.yaml` and create the service.
 4. When the deploy finishes, open the Render-provided URL.
@@ -60,7 +60,8 @@ This repo includes a `render.yaml` that deploys **one web service**:
 ### Notes / limitations (important)
 
 - Render’s free tier may **sleep** after inactivity; the first hit after sleep can be slower.
-- This is still a **SQLite** DB. It’s fine for demos and small cohorts; for higher concurrency, migrate to a managed Postgres service.
+- **Free web services use an ephemeral filesystem.** SQLite data may reset on redeploys/restarts. For durable data, upgrade Render or use a managed database.
+- See **`DEPLOY.md`** for a beginner-friendly push + Render checklist.
 
 ## Scripts
 
