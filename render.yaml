@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: scmhrd-placement-os
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: |
+      cd frontend
+      npm ci
+      npm run build
+      cd ../backend
+      npm ci
+    startCommand: |
+      cd backend
+      node src/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /var/data/placement.db
+    disk:
+      name: placement-db
+      mountPath: /var/data
+      sizeGB: 1
