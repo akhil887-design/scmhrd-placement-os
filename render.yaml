@@ -5,13 +5,16 @@ services:
     plan: free
     region: oregon
     # One shell chain so `cd` definitely applies (some runners reset cwd per line).
-    buildCommand: cd frontend && npm ci && npm run build && cd ../backend && npm ci && rm -rf static && mkdir -p static && cp -r ../frontend/dist/. static/
+    buildCommand: cd frontend && npm ci --include=dev && npm run build && cd ../backend && npm ci --include=dev && rm -rf static && mkdir -p static && cp -r ../frontend/dist/. static/
     startCommand: |
       cd backend
       node src/server.js
     envVars:
       - key: NODE_ENV
         value: production
+      # Ensure `npm ci` installs devDependencies during build (Vite is a devDependency).
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
       - key: NODE_VERSION
         value: "20"
       # Writable path on cloud hosts (ephemeral on free tier)
