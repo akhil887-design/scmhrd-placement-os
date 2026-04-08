@@ -16,6 +16,9 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      # Match backend/package.json engines; avoids native-module mismatches on Linux
+      - key: NODE_VERSION
+        value: "20.18.0"
       # Auto-generated on first deploy (do not commit secrets to git)
       - key: JWT_SECRET
         generateValue: true
