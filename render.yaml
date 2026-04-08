@@ -4,15 +4,8 @@ services:
     runtime: node
     plan: free
     region: oregon
-    buildCommand: |
-      cd frontend
-      npm ci
-      npm run build
-      cd ../backend
-      npm ci
-      npm rebuild better-sqlite3
-      rm -rf static
-      cp -r ../frontend/dist static
+    # One shell chain so `cd` definitely applies (some runners reset cwd per line).
+    buildCommand: cd frontend && npm ci && npm run build && cd ../backend && npm ci && rm -rf static && mkdir -p static && cp -r ../frontend/dist/. static/
     startCommand: |
       cd backend
       node src/server.js
