@@ -46,8 +46,16 @@ app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/director', directorRoutes);
 
-const clientDist = path.join(root, 'frontend', 'dist');
-if (fs.existsSync(clientDist)) {
+/** Prefer bundled copy (Render/slug may omit gitignored `frontend/dist`); fallback to monorepo path for local dev. */
+const clientDistBundled = path.join(__dirname, '..', 'static');
+const clientDistRepo = path.join(root, 'frontend', 'dist');
+const clientDist = fs.existsSync(clientDistBundled)
+  ? clientDistBundled
+  : fs.existsSync(clientDistRepo)
+    ? clientDistRepo
+    : null;
+
+if (clientDist) {
   app.use(express.static(clientDist));
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) return next();
