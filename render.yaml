@@ -10,15 +10,18 @@ services:
       npm run build
       cd ../backend
       npm ci
+      npm rebuild better-sqlite3
     startCommand: |
       cd backend
       node src/server.js
     envVars:
       - key: NODE_ENV
         value: production
-      # Match backend/package.json engines; avoids native-module mismatches on Linux
       - key: NODE_VERSION
-        value: "20.18.0"
+        value: "20"
+      # Writable path on cloud hosts (ephemeral on free tier)
+      - key: DB_PATH
+        value: /tmp/placement.db
       # Auto-generated on first deploy (do not commit secrets to git)
       - key: JWT_SECRET
         generateValue: true

@@ -201,3 +201,6 @@ function migratePsychAttempts() {
     db.exec(`ALTER TABLE psych_attempts ADD COLUMN trait_percentages TEXT`);
   }
 }
+
+/** Run migrations before any route module calls `db.prepare` at import time. */
+initSchema();

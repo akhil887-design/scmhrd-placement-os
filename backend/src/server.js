@@ -4,7 +4,7 @@ import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { initSchema } from './db.js';
+import './db.js';
 
 import authRoutes from './routes/auth.js';
 import profileRoutes from './routes/profile.js';
@@ -20,7 +20,6 @@ import directorRoutes from './routes/director.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '../..');
 
-initSchema();
 {
   const { runSeed } = await import('./seed.js');
   runSeed();
